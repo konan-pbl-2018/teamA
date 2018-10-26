@@ -1,8 +1,6 @@
 package template.PRG2D;
 
 import java.awt.Color;
-import java.math.BigDecimal;
-
 
 import framework.RWT.RWTContainer;
 import framework.RWT.RWTFrame3D;
@@ -11,14 +9,8 @@ import framework.game2D.Position2D;
 import framework.game2D.Sprite;
 import framework.gameMain.BaseScenarioGameContainer;
 import framework.gameMain.SimpleRolePlayingGame;
-import framework.model3D.ModelFactory;
-import framework.model3D.Object3D;
-import framework.model3D.Position3D;
-import framework.model3D.Quaternion3D;
 import framework.model3D.Universe;
-import framework.physics.PhysicsUtility;
 import framework.scenario.Event;
-import framework.scenario.ScenarioManager;
 import framework.scenario.ScenarioState;
 
 public class TemplateRPG2D extends SimpleRolePlayingGame {
@@ -26,7 +18,7 @@ public class TemplateRPG2D extends SimpleRolePlayingGame {
 	private Player player;
 	private Sprite king;
 	private Sprite enemy;
-		
+
 	// 速度によって物体が動いている時にボタンを押せるかどうかを判定するフラグ
 	private boolean disableControl = false;
 
@@ -41,26 +33,27 @@ public class TemplateRPG2D extends SimpleRolePlayingGame {
 		player.setPosition(14.0, 14.0);
 		player.setCollisionRadius(0.5);
 		universe.place(player);
-		
+
+
 		// 王様の配置
 		king = new Sprite("data\\RPG\\king.png");
 		king.setPosition(18.0, 24.0);
 		king.setCollisionRadius(0.5);
 		universe.place(king);
-		
+
 		// プレイヤーを画面の中央に
 		setCenter(player);
-		
+
 		// シナリオの設定
 		setScenario("data\\TemplateRPG\\Scenario\\scenario2.xml");
 	}
-	
+
 	@Override
 	public void subInit(Universe universe) {
 		enemy = new Sprite("data\\RPG\\monster.png", 10.0f);
 		enemy.setPosition(15.0, 15.0);
 		universe.place(enemy);
-		
+
 		// 敵を画面の中央に
 		setSubCenter(enemy);
 	}
@@ -73,19 +66,19 @@ public class TemplateRPG2D extends SimpleRolePlayingGame {
 		frame.setBackground(Color.BLACK);
 		return frame;
 	}
-	
+
 	@Override
 	protected RWTContainer createRWTContainer() {
 		container = new ScenarioGameContainer();
 		return container;
 	}
-	
+
 	// 戦闘用画面の作成
 	public BaseScenarioGameContainer createSubRWTContainer() {
 		subContainer = new FightContainer();
 		return subContainer;
 	}
-	
+
 	@Override
 	public void progress(RWTVirtualController virtualController, long interval) {
 		// 迷路ゲームステージを構成するオブジェクトの位置とプレイヤーの位置をもとに速度を0にするかどうかを調べる。
@@ -97,34 +90,37 @@ public class TemplateRPG2D extends SimpleRolePlayingGame {
 			player.setVelocity(0.0, 0.0);
 			disableControl = false;
 		}
-		
+
 		// キャラが移動していなければ、キー操作の処理を行える。
 		if(!disableControl){
 			// キー操作の処理
 			// 左
 			if (virtualController.isKeyDown(0, RWTVirtualController.LEFT)) {
-				player.setVelocity(-4.0, 0.0);
+				player.setVelocity(-5.0, 0.0);
 				disableControl = true;
+				player.setImage("data\\RPG\\player.png");
 			}
 			// 右
 			else if (virtualController.isKeyDown(0, RWTVirtualController.RIGHT)) {
-				player.setVelocity(4.0, 0.0);
+				player.setVelocity(5.0, 0.0);
 				disableControl = true;
-	
+				player.setImage("data\\RPG\\player.png");
 			}
 			// 上
 			else if (virtualController.isKeyDown(0, RWTVirtualController.UP)) {
-				player.setVelocity(0.0, 4.0);
+				player.setVelocity(0.0, 5.0);
 				disableControl = true;
+				player.setImage("data\\RPG\\king.png");
 			}
 			// 下
 			else if (virtualController.isKeyDown(0, RWTVirtualController.DOWN)) {
-				player.setVelocity(0.0, -4.0);
+				player.setVelocity(0.0, -5.0);
 				disableControl = true;
+				player.setImage("data\\RPG\\king.png");
 			}
 		}
 		player.motion(interval, map);
-		
+
 		// 衝突判定
 		if (player.checkCollision(king)) {
 			// プレイヤーと王様がぶつかった場合
@@ -144,7 +140,7 @@ public class TemplateRPG2D extends SimpleRolePlayingGame {
 
 	/**
 	 * ゲームのメイン
-	 * 
+	 *
 	 * @param args
 	 */
 	public static void main(String[] args) {

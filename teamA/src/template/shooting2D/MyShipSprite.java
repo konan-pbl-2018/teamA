@@ -2,9 +2,6 @@ package template.shooting2D;
 
 import java.util.ArrayList;
 
-import javax.vecmath.Vector2d;
-
-import framework.game2D.Actor2D;
 import framework.game2D.Sprite;
 import framework.game2D.Velocity2D;
 
@@ -30,7 +27,7 @@ public class MyShipSprite extends Sprite {
 
 	/**
 	 * 弾幕が入ったArrayListを返す
-	 * 
+	 *
 	 * @return -- 弾幕が入ったArrayList
 	 */
 	public ArrayList<MyShipBullet> shootDanmaku() {
@@ -62,7 +59,7 @@ public class MyShipSprite extends Sprite {
 
 	/**
 	 * widthとheightで決められたウィンドウの幅の中にプレイヤーがいるかどうかを返す
-	 * 
+	 *
 	 * @param width
 	 * @param height
 	 * @return
