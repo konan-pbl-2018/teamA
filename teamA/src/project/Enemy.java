@@ -24,10 +24,10 @@ public class Enemy extends Sprite {
 		}
 
 		if( this.getPosition().getY() < player.getY() ) {
-			y = 1;
+			y = 2;
 		}
 		if( this.getPosition().getY() > player.getY() ) {
-			y = -1;
+			y = -2;
 		}
 
 		this.setVelocity(x, y);
