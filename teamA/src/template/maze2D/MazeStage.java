@@ -1,6 +1,7 @@
 package template.maze2D;
 
 import java.math.BigDecimal;
+
 import framework.game2D.Maze2D;
 
 /**
@@ -39,7 +40,7 @@ public class MazeStage extends Maze2D {
 				
 //				{1}
 
-//				{1,0},
+//				{1,0},ww
 //				{1,1}
 		};
 		return map;
@@ -54,7 +55,7 @@ public class MazeStage extends Maze2D {
 				.getPosition().getY()).setScale(1, BigDecimal.ROUND_DOWN)
 				.doubleValue();
 		
-		// ステージの構成オブジェクトの位置とプレイヤーの位置が同じかどうかっ判定する
+		// ステージの構成オブジェクトの位置とプレイヤーの位置が同じかどうか判定する
 		for (int i = 0; i < this.getStageObjectList().size(); i++) {
 			if (
 					mazeSpritePositionX == this.getStageObjectList().get(i).getPosition().getX()
