@@ -17,7 +17,7 @@ public class Player extends Sprite{
 
 	//ƒvƒŒƒCƒ„[‚ÌŒü‚«
 	int playerDirection;
-	
+
 	public Player(String imageFile) {
 		super(imageFile);
 		super.setCollisionRadius(0.5);
