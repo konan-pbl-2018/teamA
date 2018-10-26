@@ -23,7 +23,7 @@ public class Map extends Map2D {
 					"data\\RPG\\sea2.jpg"},
 			7);
 		}
-
+		//あいうえお
 		// 抽象メソッドの実装
 		//　0～6:移動可能　7以上:障害物　
 		@Override
