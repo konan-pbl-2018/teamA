@@ -1,9 +1,6 @@
 package project;
 
-import java.math.BigDecimal;
-
 import framework.game2D.Map2D;
-import template.PRG2D.Player;
 
 public class Map extends Map2D {
 		// コンストラクタ
@@ -48,7 +45,7 @@ public class Map extends Map2D {
 			};
 			return map;
 		}
-
+		/*
 		public boolean checkGridPoint(Player mazeSpritePlayer) {
 			// 丸め誤差処理用変数の生成
 			double mazeSpritePositionX = new BigDecimal(mazeSpritePlayer
@@ -70,6 +67,7 @@ public class Map extends Map2D {
 			}
 			return false;
 		}
+		*/
 	}
 
 
