@@ -1,4 +1,3 @@
-
 package project;
 
 import framework.game2D.Sprite;
