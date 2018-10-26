@@ -5,29 +5,26 @@ import java.awt.Color;
 import framework.RWT.RWTContainer;
 import framework.RWT.RWTFrame3D;
 import framework.RWT.RWTVirtualController;
-import framework.game2D.Sprite;
 import framework.gameMain.BaseScenarioGameContainer;
 import framework.gameMain.SimpleRolePlayingGame;
 import framework.model3D.Universe;
 import framework.scenario.Event;
 import framework.scenario.ScenarioState;
-import template.PRG2D.MapStage;
 import template.PRG2D.Player;
 import template.PRG2D.ScenarioGameContainer;
 
 public class Main extends SimpleRolePlayingGame {
-	private MapStage map;
+	private Map map;
 	private Player player;
-	private Sprite king;
-	private Sprite enemy;
-	private Enemy enemy2;
+	private Enemy enemy;
+	private Bullet bullet;
 
 	// 速度によって物体が動いている時にボタンを押せるかどうかを判定するフラグ
 	private boolean disableControl = false;
 
 	@Override
 	public void init(Universe universe) {
-		map = new MapStage();
+		map = new Map();
 		universe.place(map);
 		camera.addTarget(map);
 
@@ -36,18 +33,20 @@ public class Main extends SimpleRolePlayingGame {
 		player.setPosition(14.0, 14.0);
 		player.setCollisionRadius(0.5);
 		universe.place(player);
-
-		// 王様の配置
-		king = new Sprite("data\\RPG\\king.png");
-		king.setPosition(18.0, 24.0);
-		king.setCollisionRadius(0.5);
-		universe.place(king);
+;
 
 		// 敵の配置
-		enemy2 = new Enemy("data\\RPG\\tegakitree.png");
-		enemy2.setPosition(18.0, 10.0);
-		enemy2.setCollisionRadius(0.5);
-		universe.place(enemy2);
+		enemy = new Enemy("data\\images\\Enemy.gif");
+		enemy.setPosition(18.0, 10.0);
+		enemy.setCollisionRadius(0.5);
+		universe.place(enemy);
+
+		//弾
+		bullet=new Bullet("data\\images\\弾.png");
+		bullet.setPosition(18, 10);
+		bullet.setCollisionRadius(0.5);
+		universe.place(bullet);//とりあえず配置してます
+
 
 		// プレイヤーを画面の中央に
 		setCenter(player);
@@ -58,12 +57,6 @@ public class Main extends SimpleRolePlayingGame {
 
 	@Override
 	public void subInit(Universe universe) {
-		enemy = new Sprite("data\\RPG\\monster.png", 10.0f);
-		enemy.setPosition(15.0, 15.0);
-		universe.place(enemy);
-
-		// 敵を画面の中央に
-		setSubCenter(enemy);
 	}
 
 	@Override
@@ -122,24 +115,25 @@ public class Main extends SimpleRolePlayingGame {
 			}
 			//玉
 			if(virtualController.isKeyDown(0,RWTVirtualController.BUTTON_A)) {
+
 				//弾を発射
 			}
 			if(virtualController.isKeyDown(0,RWTVirtualController.BUTTON_B)) {
-				if(enemy2.checkCollision(player)) {
+				if(enemy.checkCollision(player)) {//現時点ではプレイヤーとぶつかったらってことになってる
 					System.out.println("knife");
 				}
 				//ナイフで攻撃
 			}
-			enemy2.enemyMove(player.getPosition());
+			enemy.enemyMove(player.getPosition());
 
-		player.motion(interval,map);//自由に移動できない
-		enemy2.motion(interval,map);
+		player.motion(interval,map);//自由に移動できない問題あり
+		enemy.motion(interval,map);
 
 		/*if(enemy2.checlCollision(tama)){
 		 	enemy2.HP=enemy2.enemyDamage(power)
 		 }*/
 
-		if(enemy2.checkCollision(player)) {
+		if(enemy.checkCollision(player)) {
 			System.out.println("damage");
 
 		}
