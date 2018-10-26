@@ -7,6 +7,8 @@ import framework.game2D.Velocity2D;
 
 
 public class Player extends Sprite{
+	//‘Ì—Í
+	int HP=3;
 	// ’e‚ÌÀ•W
 	double bulletX, bulletY;
 	// ’e–‹‚ÌÅ‘å”
@@ -43,5 +45,9 @@ public class Player extends Sprite{
 		}
 
 		return BulletList;
+	}
+	public int playerDamage(int power) {
+		this.HP-=power;
+		return this.HP;
 	}
 }
