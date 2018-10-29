@@ -89,29 +89,25 @@ public class Main extends SimpleRolePlayingGame {
 
 		// キャラが移動していなければ、キー操作の処理を行える。
 			// キー操作の処理
+			float playerMoveX=0,playerMoveY=0;
 			// 左
 			if (virtualController.isKeyDown(0, RWTVirtualController.LEFT)) {
-				//player.setVelocity(-4.0, 0.0);
-				player.moveLeft(4.0);
+				playerMoveX-=4.0;
 				//disableControl = true;
 			}
 			// 右
 			if (virtualController.isKeyDown(0, RWTVirtualController.RIGHT)) {
-				//player.setVelocity(4.0, 0.0);
-				player.moveRight(4.0);
+				playerMoveX+=4.0;
 				//disableControl = true;
 
 			}
 			// 上
 			if (virtualController.isKeyDown(0, RWTVirtualController.UP)) {
-				//player.setVelocity(0.0, 4.0);
-				player.moveUp(4.0);
+				playerMoveY+=4.0;
 			}
 			// 下
 			if (virtualController.isKeyDown(0, RWTVirtualController.DOWN)) {
-				//player.setVelocity(0.0, -4.0);
-				player.moveDown(4.0);
-				//disableControl = true;
+				playerMoveY-=4.0;
 			}
 			//玉
 			if(virtualController.isKeyDown(0,RWTVirtualController.BUTTON_A)) {
@@ -126,8 +122,15 @@ public class Main extends SimpleRolePlayingGame {
 			}
 			enemy.enemyMove(player.getPosition());
 
-		player.motion(interval,map);//自由に移動できない問題あり
-		enemy.motion(interval,map);
+		//プレイヤーを移動させる
+		player.setVelocity(playerMoveX, playerMoveY);
+		player.motion(interval);
+		//マップとの当たり判定を調査し、壁にぶつかっていたらプレイヤーの位置を戻す
+		if(map.checkCollision(player).isCheckColision()) {
+			player.setVelocity(-playerMoveX, -playerMoveY);
+			player.motion(interval);
+		}
+		enemy.motion(interval);
 
 		/*if(enemy2.checlCollision(tama)){
 		 	enemy2.HP=enemy2.enemyDamage(power)
