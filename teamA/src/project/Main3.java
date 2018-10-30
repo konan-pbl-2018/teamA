@@ -1,30 +1,37 @@
 package project;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import framework.RWT.RWTContainer;
 import framework.RWT.RWTFrame3D;
 import framework.RWT.RWTVirtualController;
+import framework.game2D.Sprite;
+import framework.game2D.Velocity2D;
 import framework.gameMain.BaseScenarioGameContainer;
 import framework.gameMain.SimpleRolePlayingGame;
 import framework.model3D.Universe;
 import framework.scenario.Event;
 import framework.scenario.ScenarioState;
+import template.PRG2D.MapStage;
 import template.PRG2D.Player;
 import template.PRG2D.ScenarioGameContainer;
 
-public class Main extends SimpleRolePlayingGame {
-	private Map map;
+public class Main3 extends SimpleRolePlayingGame {
+	private MapStage map;
 	private Player player;
-	private Enemy enemy;
-	private Bullet bullet;
-
+	private Sprite king;
+	private Sprite enemy;
+	private Enemy enemy2;
+	private Bullet Bullet;
+	private long lastMyShipBulletShootTime = 0;
+	private ArrayList<Bullet> BulletList = new ArrayList<Bullet>();
 	// 速度によって物体が動いている時にボタンを押せるかどうかを判定するフラグ
 	private boolean disableControl = false;
 
 	@Override
 	public void init(Universe universe) {
-		map = new Map();
+		map = new MapStage();
 		universe.place(map);
 		camera.addTarget(map);
 
@@ -33,20 +40,18 @@ public class Main extends SimpleRolePlayingGame {
 		player.setPosition(14.0, 14.0);
 		player.setCollisionRadius(0.5);
 		universe.place(player);
-;
+
+		// 王様の配置
+		king = new Sprite("data\\RPG\\king.png");
+		king.setPosition(18.0, 24.0);
+		king.setCollisionRadius(0.5);
+		universe.place(king);
 
 		// 敵の配置
-		enemy = new Enemy("data\\images\\Enemy.gif");
-		enemy.setPosition(18.0, 10.0);
-		enemy.setCollisionRadius(0.5);
-		universe.place(enemy);
-
-		//弾
-		bullet=new Bullet("data\\images\\弾.png");
-		bullet.setPosition(18, 10);
-		bullet.setCollisionRadius(0.5);
-		universe.place(bullet);//とりあえず配置してます
-
+		enemy2 = new Enemy("data\\RPG\\tegakitree.png");
+		enemy2.setPosition(18.0, 10.0);
+		enemy2.setCollisionRadius(0.5);
+		universe.place(enemy2);
 
 		// プレイヤーを画面の中央に
 		setCenter(player);
@@ -57,6 +62,12 @@ public class Main extends SimpleRolePlayingGame {
 
 	@Override
 	public void subInit(Universe universe) {
+		enemy = new Sprite("data\\RPG\\monster.png", 10.0f);
+		enemy.setPosition(15.0, 15.0);
+		universe.place(enemy);
+
+		// 敵を画面の中央に
+		setSubCenter(enemy);
 	}
 
 	@Override
@@ -89,54 +100,70 @@ public class Main extends SimpleRolePlayingGame {
 
 		// キャラが移動していなければ、キー操作の処理を行える。
 			// キー操作の処理
-			float playerMoveX=0,playerMoveY=0;
 			// 左
 			if (virtualController.isKeyDown(0, RWTVirtualController.LEFT)) {
-				playerMoveX-=4.0;
+				//player.setVelocity(-4.0, 0.0);
+				player.moveLeft(4.0);
 				//disableControl = true;
 			}
 			// 右
 			if (virtualController.isKeyDown(0, RWTVirtualController.RIGHT)) {
-				playerMoveX+=4.0;
+				//player.setVelocity(4.0, 0.0);
+				player.moveRight(4.0);
 				//disableControl = true;
 
 			}
 			// 上
 			if (virtualController.isKeyDown(0, RWTVirtualController.UP)) {
-				playerMoveY+=4.0;
+				//player.setVelocity(0.0, 4.0);
+				player.moveUp(4.0);
 			}
 			// 下
 			if (virtualController.isKeyDown(0, RWTVirtualController.DOWN)) {
-				playerMoveY-=4.0;
+				//player.setVelocity(0.0, -4.0);
+				player.moveDown(4.0);
+				//disableControl = true;
 			}
-			//玉
-			if(virtualController.isKeyDown(0,RWTVirtualController.BUTTON_A)) {
+			// 弾の発射
+			if (virtualController.isKeyDown(0, RWTVirtualController.BUTTON_A)) {
+				if (System.currentTimeMillis() - lastMyShipBulletShootTime > 1000) {
+					Bullet = new Bullet("data\\images\\弾.png");
+					Bullet.setPosition(player.getPosition());
+					Bullet.setVelocity(new Velocity2D(0.0, 5.0));
+					universe.place(Bullet);
+					BulletList.add(Bullet);
+					lastMyShipBulletShootTime = System.currentTimeMillis();
+				}
+			}
 
-				//弾を発射
+			// プレイヤーの弾を動かす
+			for (int i = 0; i < BulletList.size(); i++) {
+				Bullet Bullet = BulletList.get(i);
+				Bullet.motion(interval);		// プレイヤーの弾の移動
+				if (Bullet.isInScreen(viewRangeWidth, viewRangeHeight) == false) {
+					// プレイヤーの弾を消す
+					universe.displace(Bullet);
+					BulletList.remove(i);
+				}
 			}
+
+
 			if(virtualController.isKeyDown(0,RWTVirtualController.BUTTON_B)) {
-				if(enemy.checkCollision(player)) {//現時点ではプレイヤーとぶつかったらってことになってる
+				if(enemy2.checkCollision(player)) {
 					System.out.println("knife");
 				}
 				//ナイフで攻撃
 			}
-			enemy.enemyMove(player.getPosition());
+			enemy2.enemyMove(player.getPosition());
 
-		//プレイヤーを移動させる
-		player.setVelocity(playerMoveX, playerMoveY);
-		player.motion(interval);
-		//マップとの当たり判定を調査し、壁にぶつかっていたらプレイヤーの位置を戻す
-		if(map.checkCollision(player).isCheckColision()) {
-			player.setVelocity(-playerMoveX, -playerMoveY);
-			player.motion(interval);
-		}
-		enemy.motion(interval);
+		player.motion(interval,map);//自由に移動できない
+		enemy2.motion(interval,map);
 
 		/*if(enemy2.checlCollision(tama)){
 		 	enemy2.HP=enemy2.enemyDamage(power)
 		 }*/
 
-		if(enemy.checkCollision(player)) {
+		if(enemy2.checkCollision(player)) {
 			System.out.println("damage");
 
 		}
@@ -166,7 +193,7 @@ public class Main extends SimpleRolePlayingGame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Main game = new Main();
+		Main3 game = new Main3();
 		game.setFramePolicy(5, 33, false);
 		game.start();
 	}
