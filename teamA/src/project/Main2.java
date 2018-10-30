@@ -17,6 +17,7 @@ import template.PRG2D.ScenarioGameContainer;
 
 public class Main2 extends SimpleRolePlayingGame {//名前を　Main2　にしてます。
 	int Right = 1,Down = 2,Left = 3,Up = 4,Direction = 0;
+	//a
 	private MapStage map;
 	private Player player;
 	private Sprite king;
