@@ -15,7 +15,8 @@ import template.PRG2D.MapStage;
 import template.PRG2D.Player;
 import template.PRG2D.ScenarioGameContainer;
 
-public class Main extends SimpleRolePlayingGame {
+public class Main2 extends SimpleRolePlayingGame {//名前を　Main2　にしてます。
+	int Right = 1,Down = 2,Left = 3,Up = 4,Direction = 0;
 	private MapStage map;
 	private Player player;
 	private Sprite king;
@@ -100,24 +101,28 @@ public class Main extends SimpleRolePlayingGame {
 			if (virtualController.isKeyDown(0, RWTVirtualController.LEFT)) {
 				//player.setVelocity(-4.0, 0.0);
 				player.moveLeft(4.0);
+				Direction = Left;
+				System.out.println("今"+ Direction + "です。");
 				//disableControl = true;
 			}
 			// 右
 			if (virtualController.isKeyDown(0, RWTVirtualController.RIGHT)) {
 				//player.setVelocity(4.0, 0.0);
 				player.moveRight(4.0);
+				Direction = Right;
 				//disableControl = true;
-
 			}
 			// 上
 			if (virtualController.isKeyDown(0, RWTVirtualController.UP)) {
 				//player.setVelocity(0.0, 4.0);
 				player.moveUp(4.0);
+				Direction = Up;
 			}
 			// 下
 			if (virtualController.isKeyDown(0, RWTVirtualController.DOWN)) {
 				//player.setVelocity(0.0, -4.0);
 				player.moveDown(4.0);
+				Direction = Down;
 				//disableControl = true;
 			}
 			//玉
@@ -140,8 +145,8 @@ public class Main extends SimpleRolePlayingGame {
 		 }*/
 
 		if(enemy2.checkCollision(player)) {
+			System.out.println("Direction");
 			System.out.println("damage");
-
 		}
 
 		//enemy2.motion(interval,map,player);
