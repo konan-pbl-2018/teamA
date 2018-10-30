@@ -9,11 +9,11 @@ public class Bullet extends Sprite{
 		super(imageFile);
 	}
 
-	public boolean isInScreen(int width, int height) {
-		if (this.getPosition().getX() < width / 2.0
-				&& this.getPosition().getX() > -1.0 * width / 2.0) {
-			if (this.getPosition().getY() < height / 2.0
-					&& this.getPosition().getY() > -1.0 * height / 2.0) {
+	public boolean isInScreen(double viewRangeWidth, double viewRangeHeight) {
+		if (this.getPosition().getX() < viewRangeWidth
+				&& this.getPosition().getX() > -1.0 * viewRangeWidth / 2.0) {
+			if (this.getPosition().getY() < viewRangeHeight
+					&& this.getPosition().getY() > -1.0 * viewRangeHeight / 2.0) {
 				return true;
 			}
 		}
