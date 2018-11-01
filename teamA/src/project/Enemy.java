@@ -22,14 +22,17 @@ public class Enemy extends Sprite {
 		if( this.getPosition().getX() > player.getX() ) {
 			x = -2;
 		}
-
 		if( this.getPosition().getY() < player.getY() ) {
 			y = 2;
 		}
 		if( this.getPosition().getY() > player.getY() ) {
 			y = -2;
 		}
-
+		if(Math.abs(this.getPosition().getX()-player.getX()) > Math.abs(this.getPosition().getY()-player.getY())) {
+			y=0;
+		}else {
+			x=0;
+		}
 		this.setVelocity(x, y);
 	}
 	public int enemyDamage(int power) {
