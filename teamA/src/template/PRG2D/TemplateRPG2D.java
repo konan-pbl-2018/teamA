@@ -47,12 +47,12 @@ public class TemplateRPG2D extends SimpleRolePlayingGame {
 		player.setCollisionRadius(0.5);
 		universe.place(player);
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 		 //王様の配置
-=======
+//=======
 
 		// 王様の配置
->>>>>>> branch 'master' of https://github.com/konan-pbl-2018/teamA.git
+//>>>>>>> branch 'master' of https://github.com/konan-pbl-2018/teamA.git
 		king = new Sprite("data\\RPG\\king.png");
 		king.setPosition(18.0, 24.0);
 		king.setCollisionRadius(0.5);
@@ -121,11 +121,11 @@ public class TemplateRPG2D extends SimpleRolePlayingGame {
 			else if (virtualController.isKeyDown(0, RWTVirtualController.RIGHT)) {
 				player.setVelocity(5.0, 0.0);
 				disableControl = true;
-<<<<<<< HEAD
+//<<<<<<< HEAD
 
-=======
+//=======
 				player.setImage("data\\RPG\\player.png");
->>>>>>> branch 'master' of https://github.com/konan-pbl-2018/teamA.git
+//>>>>>>> branch 'master' of https://github.com/konan-pbl-2018/teamA.git
 			}
 			// 上
 			else if (virtualController.isKeyDown(0, RWTVirtualController.UP)) {
@@ -142,11 +142,11 @@ public class TemplateRPG2D extends SimpleRolePlayingGame {
 		}
 		player.motion(interval, map);
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 
 
-=======
->>>>>>> branch 'master' of https://github.com/konan-pbl-2018/teamA.git
+//=======
+//>>>>>>> branch 'master' of https://github.com/konan-pbl-2018/teamA.git
 		// 衝突判定
 		if (player.checkCollision(king)) {
 			// プレイヤーと王様がぶつかった場合
