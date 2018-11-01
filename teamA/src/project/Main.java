@@ -1,10 +1,12 @@
 package project;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import framework.RWT.RWTContainer;
 import framework.RWT.RWTFrame3D;
 import framework.RWT.RWTVirtualController;
+import framework.game2D.Velocity2D;
 import framework.gameMain.BaseScenarioGameContainer;
 import framework.gameMain.SimpleRolePlayingGame;
 import framework.model3D.Universe;
@@ -17,8 +19,10 @@ public class Main extends SimpleRolePlayingGame {
 	private Map map;
 	private Player player;
 	private Enemy enemy;
-	private Bullet bullet;
-
+	private Bullet Bullet;
+	private long lastMyShipBulletShootTime = 0;
+	private ArrayList<Bullet> BulletList = new ArrayList<Bullet>();
+	private int Direction=0;
 	// 速度によって物体が動いている時にボタンを押せるかどうかを判定するフラグ
 	private boolean disableControl = false;
 
@@ -40,12 +44,6 @@ public class Main extends SimpleRolePlayingGame {
 		enemy.setPosition(18.0, 10.0);
 		enemy.setCollisionRadius(0.5);
 		universe.place(enemy);
-
-		//弾
-		bullet=new Bullet("data\\images\\弾.png");
-		bullet.setPosition(18, 10);
-		bullet.setCollisionRadius(0.5);
-		universe.place(bullet);//とりあえず配置してます
 
 
 		// プレイヤーを画面の中央に
@@ -94,25 +92,60 @@ public class Main extends SimpleRolePlayingGame {
 			if (virtualController.isKeyDown(0, RWTVirtualController.LEFT)) {
 				playerMoveX-=4.0;
 				//disableControl = true;
+				Direction=4;
 			}
 			// 右
 			if (virtualController.isKeyDown(0, RWTVirtualController.RIGHT)) {
 				playerMoveX+=4.0;
 				//disableControl = true;
+				Direction=2;
 
 			}
 			// 上
 			if (virtualController.isKeyDown(0, RWTVirtualController.UP)) {
 				playerMoveY+=4.0;
+				Direction=1;
 			}
 			// 下
 			if (virtualController.isKeyDown(0, RWTVirtualController.DOWN)) {
 				playerMoveY-=4.0;
+				Direction=3;
 			}
-			//玉
-			if(virtualController.isKeyDown(0,RWTVirtualController.BUTTON_A)) {
 
-				//弾を発射
+			// 弾の発射
+			if (virtualController.isKeyDown(0, RWTVirtualController.BUTTON_A)) {
+				if (System.currentTimeMillis() - lastMyShipBulletShootTime > 1000) {
+					if(Direction!=0) {
+						Bullet = new Bullet("data\\images\\弾.png");
+					}
+					Bullet.setPosition(player.getPosition());
+					if(Direction==1) {
+						Bullet.setVelocity(new Velocity2D(0.0, 5.0));
+					}
+					if(Direction==2) {
+						Bullet.setVelocity(new Velocity2D(5.0, 0.0));
+					}
+					if(Direction==3) {
+						Bullet.setVelocity(new Velocity2D(0.0, -5.0));
+					}
+					if(Direction==4) {
+						Bullet.setVelocity(new Velocity2D(-5.0, 0.0));
+					}
+					universe.place(Bullet);
+					BulletList.add(Bullet);
+					lastMyShipBulletShootTime = System.currentTimeMillis();
+				}
+			}
+
+			// プレイヤーの弾を動かす
+			for (int i = 0; i < BulletList.size(); i++) {
+				Bullet Bullet = BulletList.get(i);
+				Bullet.motion(interval);		// プレイヤーの弾の移動
+				if (Bullet.isInScreen(viewRangeWidth, viewRangeHeight) == false) {
+					// プレイヤーの弾を消す
+					universe.displace(Bullet);
+					BulletList.remove(i);
+				}
 			}
 			if(virtualController.isKeyDown(0,RWTVirtualController.BUTTON_B)) {
 				if(enemy.checkCollision(player)) {//現時点ではプレイヤーとぶつかったらってことになってる
