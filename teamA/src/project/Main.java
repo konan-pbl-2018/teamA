@@ -18,19 +18,29 @@ import template.PRG2D.ScenarioGameContainer;
 public class Main extends SimpleRolePlayingGame {
 	private Map map;
 	private Player player;
-	private Enemy enemy;
+	//private Enemy enemy;
 	private ArrayList<Enemy> enemylist = new ArrayList<Enemy>();
 	private int lastenemytime = 0;
-	private int enemycount = 0;
+	//private int enemycount = 0;
 	private double enemyrandom;
 	private int enemyplace;
 
 	private Bullet Bullet;
 	private long lastMyShipBulletShootTime = 0;
 	private ArrayList<Bullet> BulletList = new ArrayList<Bullet>();
-	private int Direction = 0;
+	//way.up   は 0 と同じ
+	//way.rightは 1 と同じ
+	//way.down は 2 と同じ
+	//way.left は 3 と同じ
+	public enum way{
+		up,
+		right,
+		down,
+		left
+	}
+	private way Direction=way.up;
 	// 速度によって物体が動いている時にボタンを押せるかどうかを判定するフラグ
-	private boolean disableControl = false;
+	//private boolean disableControl = false;
 
 	@Override
 	public void init(Universe universe) {
@@ -43,11 +53,12 @@ public class Main extends SimpleRolePlayingGame {
 		player.setPosition(14.0, 14.0);
 		player.setCollisionRadius(0.5);
 		universe.place(player);
-		// 敵の配置
+		/* 敵の配置
 		enemy = new Enemy("data\\\\images\\\\弾.png");
 		enemy.setPosition(18.0, 10.0);
 		enemy.setCollisionRadius(0.5);
 		universe.place(enemy);
+		*/
 
 		// プレイヤーを画面の中央に
 		setCenter(player);
@@ -94,43 +105,43 @@ public class Main extends SimpleRolePlayingGame {
 		if (virtualController.isKeyDown(0, RWTVirtualController.LEFT)) {
 			playerMoveX -= 4.0;
 			//disableControl = true;
-			Direction = 4;
+			Direction = way.left;
 		}
 		// 右
 		if (virtualController.isKeyDown(0, RWTVirtualController.RIGHT)) {
 			playerMoveX += 4.0;
 			//disableControl = true;
-			Direction = 2;
+			Direction = way.right;
 
 		}
 		// 上
 		if (virtualController.isKeyDown(0, RWTVirtualController.UP)) {
 			playerMoveY += 4.0;
-			Direction = 1;
+			Direction = way.up;
 		}
 		// 下
 		if (virtualController.isKeyDown(0, RWTVirtualController.DOWN)) {
 			playerMoveY -= 4.0;
-			Direction = 3;
+			Direction = way.down;
 		}
 
 		// 弾の発射
 		if (virtualController.isKeyDown(0, RWTVirtualController.BUTTON_A)) {
 			if (System.currentTimeMillis() - lastMyShipBulletShootTime > 1000) {
-				if (Direction != 0) {
+				if (Direction != null) {
 					Bullet = new Bullet("data\\images\\弾.png");
 				}
 				Bullet.setPosition(player.getPosition());
-				if (Direction == 1) {
+				if (Direction == way.up) {
 					Bullet.setVelocity(new Velocity2D(0.0, 5.0));
 				}
-				if (Direction == 2) {
+				if (Direction == way.right) {
 					Bullet.setVelocity(new Velocity2D(5.0, 0.0));
 				}
-				if (Direction == 3) {
+				if (Direction == way.down) {
 					Bullet.setVelocity(new Velocity2D(0.0, -5.0));
 				}
-				if (Direction == 4) {
+				if (Direction == way.left) {
 					Bullet.setVelocity(new Velocity2D(-5.0, 0.0));
 				}
 				universe.place(Bullet);
@@ -150,9 +161,11 @@ public class Main extends SimpleRolePlayingGame {
 			}
 		}
 		if (virtualController.isKeyDown(0, RWTVirtualController.BUTTON_B)) {
+			/*
 			if (enemy.checkCollision(player)) {//現時点ではプレイヤーとぶつかったらってことになってる
 				System.out.println("knife");
 			}
+			*/
 			//ナイフで攻撃
 		}
 
@@ -168,45 +181,56 @@ public class Main extends SimpleRolePlayingGame {
 		//敵のスポーン
 		lastenemytime++;
 		if (lastenemytime > 600) {
-			if (enemycount < 6) {
-				enemy = new Enemy("data\\images\\Enemy.gif");
+			if (enemylist.size() < 6) {
+				Enemy e = new Enemy("data\\images\\Enemy.gif");
 				enemyrandom=Math.random();
 				enemyplace=(int) (enemyrandom*4);
 
 				if(enemyplace==1) {
-				enemy.setPosition(14.0, 28.0);
+				e.setPosition(14.0, 28.0);
 				}
 				if(enemyplace==2) {
-				enemy.setPosition(28.0, 14.0);
+				e.setPosition(28.0, 14.0);
 				}
 				if(enemyplace==3) {
-				enemy.setPosition(14.0, 0.0);
+				e.setPosition(14.0, 0.0);
 				}
 				if(enemyplace==4) {
-				enemy.setPosition(0.0, 14.0);
+				e.setPosition(0.0, 14.0);
 				}
-				enemy.setCollisionRadius(0.5);
-				universe.place(enemy);
-				enemylist.add(enemy);
+				e.setCollisionRadius(0.5);
+				universe.place(e);
+				enemylist.add(e);
 				lastenemytime = 0;
-				enemycount++;
+				//enemycount++;
 			}
 		}
 		//敵を動かす
 		for (int j = 0; j < enemylist.size(); j++) {
-			Enemy enemy = enemylist.get(j);
-			enemy.enemyMove(player.getPosition());
-			enemy.motion(interval);
+			Enemy e = enemylist.get(j);
+			e.enemyMove(player.getPosition());
+			e.motion(interval);
+			//迂回動作
+			if(map.checkCollision(enemylist.get(j)).isCheckColision()) {
+				System.out.println(j+"col");
+				e.setVelocity(
+						e.getVelocity().getY()-e.getVelocity().getX(),
+						-e.getVelocity().getX()-e.getVelocity().getY()
+						);
+				e.motion(interval);
+			}
+			//プレイヤーとの接触
+			if (e.checkCollision(player)) {
+				System.out.println("enemy"+ j +"'s attack");
+
+			}
 		}
 
 		/*if(enemy2.checlCollision(tama)){
 		 	enemy2.HP=enemy2.enemyDamage(power)
 		 }*/
 
-		if (enemy.checkCollision(player)) {
-			System.out.println("damage");
 
-		}
 
 		//enemy2.motion(interval,map,player);
 
