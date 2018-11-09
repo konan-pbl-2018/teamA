@@ -38,16 +38,16 @@ public class Player extends Sprite{
 
 	public void muki(way hou) {
 		if(hou==way.up) {
-			this.setImage("data\\images\\ue");
+			this.setImage("data\\player\\up");
 		}
 		if(hou==way.right) {
-			this.setImage("data\\images\\migi");
+			this.setImage("data\\player\\right");
 		}
 		if(hou==way.down) {
-			this.setImage("data\\images\\sita");
+			this.setImage("data\\player\\down");
 		}
 		if(hou==way.left) {
-			this.setImage("data\\images\\hidari");
+			this.setImage("data\\player\\left");
 		}
 
 	}
