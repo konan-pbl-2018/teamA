@@ -11,8 +11,14 @@ public class Enemy extends Sprite {
 	public int HP=100;
 	//UŒ‚—Í
 	public int power=1;
-	//Œü‚¢‚Ä‚¢‚é•ûŒü,1‚ªã‚ÅŒv‰ñ‚è‚É2,3,4
-	public int way=1;
+
+	public enum way{//“G‚ÌŒü‚«
+		up,
+		right,
+		down,
+		left
+	}
+	way hou=way.up;
 
 	public void enemyMove(Position2D player) {
 		float x = 0,y=0;
@@ -39,5 +45,22 @@ public class Enemy extends Sprite {
 	public int getPower() {
 		return this.power;
 	}
+
+	public void muki(way hou) {
+		if(hou==way.up) {
+			this.setImage("data\\images\\ue");
+		}
+		if(hou==way.right) {
+			this.setImage("data\\images\\migi");
+		}
+		if(hou==way.down) {
+			this.setImage("data\\images\\sita");
+		}
+		if(hou==way.left) {
+			this.setImage("data\\images\\hidari");
+		}
+
+	}
+
 
 }

@@ -15,7 +15,13 @@ public class Player extends Sprite{
 	private Bullet Bullet;
 
 	//ƒvƒŒƒCƒ„[‚ÌŒü‚«
-	int playerDirection;
+	public enum way{
+		up,
+		right,
+		down,
+		left
+	}
+	way hou=way.up;
 
 	public Player(String imageFile) {
 		super(imageFile);
@@ -27,5 +33,25 @@ public class Player extends Sprite{
 	public int playerDamage(int power) {
 		this.HP-=power;
 		return this.HP;
+
 	}
+
+	public void muki(way hou) {
+		if(hou==way.up) {
+			this.setImage("data\\images\\ue");
+		}
+		if(hou==way.right) {
+			this.setImage("data\\images\\migi");
+		}
+		if(hou==way.down) {
+			this.setImage("data\\images\\sita");
+		}
+		if(hou==way.left) {
+			this.setImage("data\\images\\hidari");
+		}
+
+	}
+
+
+
 }
