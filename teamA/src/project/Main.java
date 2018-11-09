@@ -28,6 +28,9 @@ public class Main extends SimpleRolePlayingGame {
 	private Bullet Bullet;
 	private long lastMyShipBulletShootTime = 0;
 	private ArrayList<Bullet> BulletList = new ArrayList<Bullet>();
+	private int enemycounter=0;
+
+	private int Bossflag=0;
 	//way.up   は 0 と同じ
 	//way.rightは 1 と同じ
 	//way.down は 2 と同じ
@@ -41,6 +44,9 @@ public class Main extends SimpleRolePlayingGame {
 	private way Direction=way.up;
 	// 速度によって物体が動いている時にボタンを押せるかどうかを判定するフラグ
 	//private boolean disableControl = false;
+
+
+
 
 	@Override
 	public void init(Universe universe) {
@@ -159,6 +165,9 @@ public class Main extends SimpleRolePlayingGame {
 				universe.displace(Bullet);
 				BulletList.remove(i);
 			}
+
+
+
 		}
 		if (virtualController.isKeyDown(0, RWTVirtualController.BUTTON_B)) {
 			/*
@@ -180,9 +189,11 @@ public class Main extends SimpleRolePlayingGame {
 
 		//敵のスポーン
 		lastenemytime++;
-		if (lastenemytime > 600) {
+		if (lastenemytime > 100) {
+			if(enemycounter<=4) {
 			if (enemylist.size() < 6) {
 				Enemy e = new Enemy("data\\images\\Enemy.gif");
+
 				enemyrandom=Math.random();
 				enemyplace=(int) (enemyrandom*4);
 
@@ -205,6 +216,8 @@ public class Main extends SimpleRolePlayingGame {
 				//enemycount++;
 			}
 		}
+		}
+
 		//敵を動かす
 		for (int j = 0; j < enemylist.size(); j++) {
 			Enemy e = enemylist.get(j);
@@ -223,6 +236,37 @@ public class Main extends SimpleRolePlayingGame {
 			if (e.checkCollision(player)) {
 				System.out.println("enemy"+ j +"'s attack");
 
+			}
+			//弾との接触
+			for(int i=0;i<BulletList.size();i++) {
+				Bullet Bullet = BulletList.get(i);
+				if(e.checkCollision(Bullet)) {
+					universe.displace(Bullet);
+					BulletList.remove(i);
+					if(Bossflag==0) {
+					e.HP=e.HP-100;
+					}
+					if(Bossflag==1) {
+						e.HP=e.HP-20;
+					}
+				}
+			}
+			if(e.HP<=0) {
+				universe.displace(e);
+				enemylist.remove(j);
+				enemycounter++;
+
+			}
+			System.out.println("撃破数"+enemycounter);
+		}
+		//ボスの出現
+		if(enemycounter==10) {
+			if(Bossflag==0) {
+			Enemy e = new Enemy("data\\enemy\\snake.gif");
+			e.setPosition(14.0, 14.0);
+			universe.place(e);
+			enemylist.add(e);
+			Bossflag=1;
 			}
 		}
 
@@ -257,7 +301,7 @@ public class Main extends SimpleRolePlayingGame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Main4 game = new Main4();
+		Main game = new Main();
 		game.setFramePolicy(5, 33, false);
 		game.start();
 	}
