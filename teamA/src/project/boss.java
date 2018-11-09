@@ -3,14 +3,14 @@ package project;
 import framework.game2D.Position2D;
 import framework.game2D.Sprite;
 
-public class Enemy extends Sprite {
-	public Enemy(String imageFile) {
+public class boss extends Sprite {
+	public boss(String imageFile) {
 		super(imageFile);
 	}
 	//‘Ì—Í
-	public int HP=100;
+	public int HP=1000;
 	//UŒ‚—Í
-	public int power=1;
+	public int power=2;
 
 	public enum way{//“G‚ÌŒü‚«
 		up,
@@ -28,17 +28,14 @@ public class Enemy extends Sprite {
 		if( this.getPosition().getX() > player.getX() ) {
 			x = -2;
 		}
+
 		if( this.getPosition().getY() < player.getY() ) {
 			y = 2;
 		}
 		if( this.getPosition().getY() > player.getY() ) {
 			y = -2;
 		}
-		if(Math.abs(this.getPosition().getX()-player.getX()) > Math.abs(this.getPosition().getY()-player.getY())) {
-			y=0;
-		}else {
-			x=0;
-		}
+
 		this.setVelocity(x, y);
 	}
 	public int enemyDamage(int power) {

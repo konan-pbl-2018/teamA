@@ -5,7 +5,7 @@ import framework.game2D.Sprite;
 
 public class Player extends Sprite{
 	//体力
-	int HP=3;
+	int HP=100;
 	// 弾の座標
 	double bulletX, bulletY;
 	// 弾幕の最大数
@@ -15,7 +15,13 @@ public class Player extends Sprite{
 	private Bullet Bullet;
 
 	//プレイヤーの向き
-	int playerDirection;
+	public enum way{
+		up,
+		right,
+		down,
+		left
+	}
+	way hou=way.up;
 
 	public Player(String imageFile) {
 		super(imageFile);
@@ -26,6 +32,27 @@ public class Player extends Sprite{
 
 	public int playerDamage(int power) {
 		this.HP-=power;
+		if(this.HP<0) this.HP=0;
 		return this.HP;
+
 	}
+
+	public void muki(way hou) {
+		if(hou==way.up) {
+			this.setImage("data\\player\\up");
+		}
+		if(hou==way.right) {
+			this.setImage("data\\player\\right");
+		}
+		if(hou==way.down) {
+			this.setImage("data\\player\\down");
+		}
+		if(hou==way.left) {
+			this.setImage("data\\player\\left");
+		}
+
+	}
+
+
+
 }
