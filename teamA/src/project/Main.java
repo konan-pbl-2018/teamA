@@ -15,7 +15,7 @@ import framework.gameMain.SimpleRolePlayingGame;
 import framework.model3D.Universe;
 import framework.scenario.Event;
 import framework.scenario.ScenarioState;
-import template.PRG2D.Player;
+//import template.PRG2D.Player;
 import template.PRG2D.ScenarioGameContainer;
 
 public class Main extends SimpleRolePlayingGame {
@@ -310,7 +310,7 @@ public class Main extends SimpleRolePlayingGame {
 			//ƒvƒŒƒCƒ„[‚Æ‚ÌÚG
 			if (e.checkCollision(player)) {
 				System.out.println("enemy"+ j +"'s attack");
-
+				((ScenarioGameContainer)container).changeLifeBar(player.playerDamage(1));
 			}
 			//’e‚Æ‚ÌÚG
 			for(int i=0;i<BulletList.size();i++) {
