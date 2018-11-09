@@ -26,6 +26,7 @@ public class Main3 extends SimpleRolePlayingGame {
 	private Bullet Bullet;
 	private long lastMyShipBulletShootTime = 0;
 	private ArrayList<Bullet> BulletList = new ArrayList<Bullet>();
+	private int Direction=0;
 	// ‘¬“x‚É‚æ‚Á‚Ä•¨‘Ì‚ª“®‚¢‚Ä‚¢‚éŽž‚Éƒ{ƒ^ƒ“‚ð‰Ÿ‚¹‚é‚©‚Ç‚¤‚©‚ð”»’è‚·‚éƒtƒ‰ƒO
 	private boolean disableControl = false;
 
@@ -105,31 +106,48 @@ public class Main3 extends SimpleRolePlayingGame {
 				//player.setVelocity(-4.0, 0.0);
 				player.moveLeft(4.0);
 				//disableControl = true;
+				Direction=4;
 			}
 			// ‰E
 			if (virtualController.isKeyDown(0, RWTVirtualController.RIGHT)) {
 				//player.setVelocity(4.0, 0.0);
 				player.moveRight(4.0);
 				//disableControl = true;
+				Direction=2;
 
 			}
 			// ã
 			if (virtualController.isKeyDown(0, RWTVirtualController.UP)) {
 				//player.setVelocity(0.0, 4.0);
 				player.moveUp(4.0);
+				Direction=1;
 			}
 			// ‰º
 			if (virtualController.isKeyDown(0, RWTVirtualController.DOWN)) {
 				//player.setVelocity(0.0, -4.0);
 				player.moveDown(4.0);
 				//disableControl = true;
+				Direction=3;
 			}
 			// ’e‚Ì”­ŽË
 			if (virtualController.isKeyDown(0, RWTVirtualController.BUTTON_A)) {
 				if (System.currentTimeMillis() - lastMyShipBulletShootTime > 1000) {
-					Bullet = new Bullet("data\\images\\’e.png");
+					if(Direction!=0) {
+						Bullet = new Bullet("data\\images\\’e.png");
+					}
 					Bullet.setPosition(player.getPosition());
-					Bullet.setVelocity(new Velocity2D(0.0, 5.0));
+					if(Direction==1) {
+						Bullet.setVelocity(new Velocity2D(0.0, 5.0));
+					}
+					if(Direction==2) {
+						Bullet.setVelocity(new Velocity2D(5.0, 0.0));
+					}
+					if(Direction==3) {
+						Bullet.setVelocity(new Velocity2D(0.0, -5.0));
+					}
+					if(Direction==4) {
+						Bullet.setVelocity(new Velocity2D(-5.0, 0.0));
+					}
 					universe.place(Bullet);
 					BulletList.add(Bullet);
 					lastMyShipBulletShootTime = System.currentTimeMillis();

@@ -1,11 +1,13 @@
 package project;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import framework.RWT.RWTContainer;
 import framework.RWT.RWTFrame3D;
 import framework.RWT.RWTVirtualController;
 import framework.game2D.Sprite;
+import framework.game2D.Velocity2D;
 import framework.gameMain.BaseScenarioGameContainer;
 import framework.gameMain.SimpleRolePlayingGame;
 import framework.model3D.Universe;
@@ -23,7 +25,9 @@ public class Main2 extends SimpleRolePlayingGame {//名前を　Main2　にしてます。
 	private Sprite king;
 	private Sprite enemy;
 	private Enemy enemy2;
-
+	private Bullet Bullet;
+	private long lastMyShipBulletShootTime = 0;
+	private ArrayList<Bullet> BulletList = new ArrayList<Bullet>();
 	// 速度によって物体が動いている時にボタンを押せるかどうかを判定するフラグ
 	private boolean disableControl = false;
 
@@ -126,10 +130,33 @@ public class Main2 extends SimpleRolePlayingGame {//名前を　Main2　にしてます。
 				Direction = Down;
 				//disableControl = true;
 			}
-			//玉
-			if(virtualController.isKeyDown(0,RWTVirtualController.BUTTON_A)) {
-				//弾を発射
+
+			// 弾の発射
+			if (virtualController.isKeyDown(0, RWTVirtualController.BUTTON_A)) {
+				if (System.currentTimeMillis() - lastMyShipBulletShootTime > 1000) {
+					Bullet = new Bullet("data\\images\\弾.png");
+					Bullet.setPosition(player.getPosition());
+					//方向によって飛ばす向きを変える
+					if(Direction==Left) {
+					Bullet.setVelocity(new Velocity2D(-5.0, 0.0));
+					}
+					universe.place(Bullet);
+					BulletList.add(Bullet);
+					lastMyShipBulletShootTime = System.currentTimeMillis();
+				}
 			}
+
+			// プレイヤーの弾を動かす
+			for (int i = 0; i < BulletList.size(); i++) {
+				Bullet Bullet = BulletList.get(i);
+				Bullet.motion(interval);		// プレイヤーの弾の移動
+				if (Bullet.isInScreen(viewRangeWidth, viewRangeHeight) == false) {
+					// プレイヤーの弾を消す
+					universe.displace(Bullet);
+					BulletList.remove(i);
+				}
+			}
+
 			if(virtualController.isKeyDown(0,RWTVirtualController.BUTTON_B)) {
 				if(enemy2.checkCollision(player)) {
 					System.out.println("knife");
