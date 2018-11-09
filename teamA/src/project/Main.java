@@ -1,6 +1,8 @@
 package project;
 
+
 import java.awt.Color;
+import java.awt.GraphicsConfiguration;
 import java.util.ArrayList;
 
 import framework.RWT.RWTContainer;
@@ -8,6 +10,7 @@ import framework.RWT.RWTFrame3D;
 import framework.RWT.RWTVirtualController;
 import framework.game2D.Velocity2D;
 import framework.gameMain.BaseScenarioGameContainer;
+import framework.gameMain.IGameState;
 import framework.gameMain.SimpleRolePlayingGame;
 import framework.model3D.Universe;
 import framework.scenario.Event;
@@ -48,8 +51,79 @@ public class Main extends SimpleRolePlayingGame {
 
 
 
+
+	private IGameState initialGameState = null;
+	private IGameState finalGameState = null;
+
+	public  Main(){
+		super();
+		initialGameState = new IGameState() {
+			@Override
+			public void init(RWTFrame3D frame) {
+				Main.this.frame = frame;
+				RWTContainer container = new MainStartContainer(Main.this);
+				changeContainer(container);
+			}
+
+			@Override
+			public boolean useTimer() {
+				return false;
+			}
+			@Override
+			public void update(RWTVirtualController virtualController, long interval) {
+			}
+		};
+		finalGameState = new IGameState() {
+			@Override
+			public void init(RWTFrame3D frame) {
+				Main.this.frame = frame;
+				RWTContainer container = new MainEndingContainer(Main.this);
+				changeContainer(container);
+			}
+			@Override
+			public boolean useTimer() {
+				return false;
+			}
+			@Override
+			public void update(RWTVirtualController virtualController, long interval) {
+			}
+		};
+		setCurrentGameState(initialGameState);
+	}
+
+	protected void changeContainer(RWTContainer container) {
+		// TODO 自動生成されたメソッド・スタブ
+		frame.setContentPane(container);
+		GraphicsConfiguration gc = null;
+		container.build(gc);
+	}
+
+	public void restart() {
+		stop();
+		setCurrentGameState(initialGameState);
+		start();
+	}
+
+	public void play() {
+		stop();
+		setCurrentGameState(this);
+		start();
+	}
+
+	public void ending() {
+		stop();
+		setCurrentGameState(finalGameState);
+		start();
+	}
+
+
+
+
+
+
 	@Override
 	public void init(Universe universe) {
+
 		map = new Map();
 		universe.place(map);
 		camera.addTarget(map);
@@ -94,6 +168,7 @@ public class Main extends SimpleRolePlayingGame {
 
 	@Override
 	public void progress(RWTVirtualController virtualController, long interval) {
+
 		// 迷路ゲームステージを構成するオブジェクトの位置とプレイヤーの位置をもとに速度を0にするかどうかを調べる。
 		//Position2D gridPoint = map.getNeighborGridPoint(player);
 
