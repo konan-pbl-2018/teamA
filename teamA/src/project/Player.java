@@ -5,7 +5,7 @@ import framework.game2D.Sprite;
 
 public class Player extends Sprite{
 	//‘Ì—Í
-	int HP=3;
+	int HP=100;
 	// ’e‚ÌÀ•W
 	double bulletX, bulletY;
 	// ’e–‹‚ÌÅ‘å”
@@ -32,6 +32,7 @@ public class Player extends Sprite{
 
 	public int playerDamage(int power) {
 		this.HP-=power;
+		if(this.HP<0) this.HP=0;
 		return this.HP;
 
 	}
