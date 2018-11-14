@@ -211,7 +211,7 @@ public class Main extends SimpleRolePlayingGame {
 		if (virtualController.isKeyDown(0, RWTVirtualController.BUTTON_A)) {
 			if (System.currentTimeMillis() - lastMyShipBulletShootTime > 1000) {
 				if (Direction != null) {
-					Bullet = new Bullet("data\\images\\蠑ｾ.png");
+					Bullet = new Bullet("data\\images\\弾.png");
 				}
 				Bullet.setPosition(player.getPosition().getX(), player.getPosition().getY(), 15);
 				if (Direction == way.up) {
