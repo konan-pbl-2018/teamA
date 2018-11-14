@@ -32,6 +32,7 @@ public class Main extends SimpleRolePlayingGame {
 	private long lastMyShipBulletShootTime = 0;
 	private ArrayList<Bullet> BulletList = new ArrayList<Bullet>();
 	private int enemycounter=0;
+	private int killcounter=0;
 
 	private int Bossflag=0;
 	//way.up   は 0 と同じ
@@ -130,7 +131,7 @@ public class Main extends SimpleRolePlayingGame {
 
 		// プレイヤーの配置
 		player = new Player("data\\RPG\\player.png");
-		player.setPosition(14.0, 14.0);
+		player.setPosition(14.0, 20.0);
 		player.setCollisionRadius(0.5);
 		universe.place(player);
 		/* 敵の配置
@@ -265,30 +266,30 @@ public class Main extends SimpleRolePlayingGame {
 		//敵のスポーン
 		lastenemytime++;
 		if (lastenemytime > 100) {
-			if(enemycounter<=4) {
+			if(enemycounter<10) {
 			if (enemylist.size() < 6) {
-				Enemy e = new Enemy("data\\images\\Enemy.gif");
+				Enemy e = new Enemy("data\\images\\Enemy.gif");///////////////////////////////////////
 
 				enemyrandom=Math.random();
 				enemyplace=(int) (enemyrandom*4);
 
 				if(enemyplace==1) {
-				e.setPosition(14.0, 28.0);
+				e.setPosition(14.0, 34.0);
 				}
 				if(enemyplace==2) {
-				e.setPosition(28.0, 14.0);
+				e.setPosition(28.0, 18.0);
 				}
 				if(enemyplace==3) {
-				e.setPosition(14.0, 0.0);
+				e.setPosition(14.0, 12.0);
 				}
 				if(enemyplace==4) {
-				e.setPosition(0.0, 14.0);
+				e.setPosition(2.0, 18.0);
 				}
 				e.setCollisionRadius(0.5);
 				universe.place(e);
 				enemylist.add(e);
 				lastenemytime = 0;
-				//enemycount++;
+				enemycounter++;
 			}
 		}
 		}
@@ -329,16 +330,16 @@ public class Main extends SimpleRolePlayingGame {
 			if(e.HP<=0) {
 				universe.displace(e);
 				enemylist.remove(j);
-				enemycounter++;
+				killcounter++;
 
 			}
-			System.out.println("撃破数"+enemycounter);
+			System.out.println("撃破数"+killcounter);
 		}
 		//ボスの出現
-		if(enemycounter==10) {
+		if(killcounter==10) {
 			if(Bossflag==0) {
 			Enemy e = new Enemy("data\\enemy\\snake.gif");
-			e.setPosition(14.0, 14.0);
+			e.setPosition(14.0, 18.0);
 			universe.place(e);
 			enemylist.add(e);
 			Bossflag=1;
