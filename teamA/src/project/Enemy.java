@@ -10,7 +10,9 @@ public class Enemy extends Sprite {
 	//体力
 	public int HP=100;
 	//攻撃力
-	public int power=1;
+	public int power=10;
+	//スピード
+	public int spd=2;
 
 	public enum way{//敵の向き
 		up,
@@ -23,16 +25,16 @@ public class Enemy extends Sprite {
 	public void enemyMove(Position2D player) {
 		float x = 0,y=0;
 		if( this.getPosition().getX() < player.getX() ) {
-			x = 2;
+			x = spd;
 		}
 		if( this.getPosition().getX() > player.getX() ) {
-			x = -2;
+			x = -spd;
 		}
 		if( this.getPosition().getY() < player.getY() ) {
-			y = 2;
+			y = spd;
 		}
 		if( this.getPosition().getY() > player.getY() ) {
-			y = -2;
+			y = -spd;
 		}
 		if(Math.abs(this.getPosition().getX()-player.getX()) > Math.abs(this.getPosition().getY()-player.getY())) {
 			y=0;

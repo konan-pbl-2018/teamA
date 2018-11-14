@@ -34,11 +34,11 @@ public class Main extends SimpleRolePlayingGame {
 	private int enemycounter=0;
 	private int killcounter=0;
 
-	private int Bossflag=0;
-	//way.up   ÇÕ 0 Ç∆ìØÇ∂
-	//way.rightÇÕ 1 Ç∆ìØÇ∂
-	//way.down ÇÕ 2 Ç∆ìØÇ∂
-	//way.left ÇÕ 3 Ç∆ìØÇ∂
+	private boolean Bossflag=false;
+	//way.up   „ÅØ 0 „Å®Âêå„Åò
+	//way.right„ÅØ 1 „Å®Âêå„Åò
+	//way.down „ÅØ 2 „Å®Âêå„Åò
+	//way.left „ÅØ 3 „Å®Âêå„Åò
 	public enum way{
 		up,
 		right,
@@ -46,7 +46,7 @@ public class Main extends SimpleRolePlayingGame {
 		left
 	}
 	private way Direction=way.up;
-	// ë¨ìxÇ…ÇÊÇ¡Çƒï®ëÃÇ™ìÆÇ¢ÇƒÇ¢ÇÈéûÇ…É{É^ÉìÇâüÇπÇÈÇ©Ç«Ç§Ç©ÇîªíËÇ∑ÇÈÉtÉâÉO
+	// ÈÄüÂ∫¶„Å´„Çà„Å£„Å¶Áâ©‰Ωì„ÅåÂãï„ÅÑ„Å¶„ÅÑ„ÇãÊôÇ„Å´„Éú„Çø„É≥„ÇíÊäº„Åõ„Çã„Åã„Å©„ÅÜ„Åã„ÇíÂà§ÂÆö„Åô„Çã„Éï„É©„Ç∞
 	//private boolean disableControl = false;
 
 
@@ -93,7 +93,7 @@ public class Main extends SimpleRolePlayingGame {
 	}
 
 	protected void changeContainer(RWTContainer container) {
-		// TODO é©ìÆê∂ê¨Ç≥ÇÍÇΩÉÅÉ\ÉbÉhÅEÉXÉ^Éu
+		// TODO Ëá™ÂãïÁîüÊàê„Åï„Çå„Åü„É°„ÇΩ„ÉÉ„Éâ„Éª„Çπ„Çø„Éñ
 		frame.setContentPane(container);
 		GraphicsConfiguration gc = null;
 		container.build(gc);
@@ -129,22 +129,22 @@ public class Main extends SimpleRolePlayingGame {
 		universe.place(map);
 		camera.addTarget(map);
 
-		// ÉvÉåÉCÉÑÅ[ÇÃîzíu
-		player = new Player("data\\RPG\\player.png");
-		player.setPosition(14.0, 20.0);
-		player.setCollisionRadius(0.5);
+		// „Éó„É¨„Ç§„É§„Éº„ÅÆÈÖçÁΩÆ
+		player = new Player("data\\player\\up.png");
+		player.setPosition(14.0, 14.0, 1.0);
+		player.setCollisionRadius(0.1);
 		universe.place(player);
-		/* ìGÇÃîzíu
-		enemy = new Enemy("data\\\\images\\\\íe.png");
+		/* Êïµ„ÅÆÈÖçÁΩÆ
+		enemy = new Enemy("data\\\\images\\\\Âºæ.png");
 		enemy.setPosition(18.0, 10.0);
 		enemy.setCollisionRadius(0.5);
 		universe.place(enemy);
 		*/
 
-		// ÉvÉåÉCÉÑÅ[ÇâÊñ ÇÃíÜâõÇ…
+		// „Éó„É¨„Ç§„É§„Éº„ÇíÁîªÈù¢„ÅÆ‰∏≠Â§Æ„Å´
 		setCenter(player);
 
-		// ÉVÉiÉäÉIÇÃê›íË
+		// „Ç∑„Éä„É™„Ç™„ÅÆË®≠ÂÆö
 		setScenario("data\\TemplateRPG\\Scenario\\scenario2.xml");
 	}
 
@@ -170,61 +170,61 @@ public class Main extends SimpleRolePlayingGame {
 	@Override
 	public void progress(RWTVirtualController virtualController, long interval) {
 
-		// ñ¿òHÉQÅ[ÉÄÉXÉeÅ[ÉWÇç\ê¨Ç∑ÇÈÉIÉuÉWÉFÉNÉgÇÃà íuÇ∆ÉvÉåÉCÉÑÅ[ÇÃà íuÇÇ‡Ç∆Ç…ë¨ìxÇ0Ç…Ç∑ÇÈÇ©Ç«Ç§Ç©Çí≤Ç◊ÇÈÅB
+		// Ëø∑Ë∑Ø„Ç≤„Éº„É†„Çπ„ÉÜ„Éº„Ç∏„ÇíÊßãÊàê„Åô„Çã„Ç™„Éñ„Ç∏„Çß„ÇØ„Éà„ÅÆ‰ΩçÁΩÆ„Å®„Éó„É¨„Ç§„É§„Éº„ÅÆ‰ΩçÁΩÆ„Çí„ÇÇ„Å®„Å´ÈÄüÂ∫¶„Çí0„Å´„Åô„Çã„Åã„Å©„ÅÜ„Åã„ÇíË™ø„Åπ„Çã„ÄÇ
 		//Position2D gridPoint = map.getNeighborGridPoint(player);
 
-		// ë¨ìxÇ™0Ç…Ç∑ÇÈÉtÉâÉOÇ™óßÇ¡ÇƒÇ¢ÇÍÇŒÅAë¨ìxÇ0Ç…Ç∑ÇÈ
+		// ÈÄüÂ∫¶„Åå0„Å´„Åô„Çã„Éï„É©„Ç∞„ÅåÁ´ã„Å£„Å¶„ÅÑ„Çå„Å∞„ÄÅÈÄüÂ∫¶„Çí0„Å´„Åô„Çã
 		/*if (gridPoint != null) {
 			player.setPosition(gridPoint);
 			player.setVelocity(0.0, 0.0);
 			disableControl = false;
 		}*/
 
-		// ÉLÉÉÉâÇ™à⁄ìÆÇµÇƒÇ¢Ç»ÇØÇÍÇŒÅAÉLÅ[ëÄçÏÇÃèàóùÇçsÇ¶ÇÈÅB
-		// ÉLÅ[ëÄçÏÇÃèàóù
+		// „Ç≠„É£„É©„ÅåÁßªÂãï„Åó„Å¶„ÅÑ„Å™„Åë„Çå„Å∞„ÄÅ„Ç≠„ÉºÊìç‰Ωú„ÅÆÂá¶ÁêÜ„ÇíË°å„Åà„Çã„ÄÇ
+		// „Ç≠„ÉºÊìç‰Ωú„ÅÆÂá¶ÁêÜ
 		float playerMoveX = 0, playerMoveY = 0;
-		// ç∂
+		// Â∑¶
 		if (virtualController.isKeyDown(0, RWTVirtualController.LEFT)) {
 			playerMoveX -= 4.0;
 			//disableControl = true;
 			Direction = way.left;
 		}
-		// âE
+		// Âè≥
 		if (virtualController.isKeyDown(0, RWTVirtualController.RIGHT)) {
 			playerMoveX += 4.0;
 			//disableControl = true;
 			Direction = way.right;
-
 		}
-		// è„
+		// ‰∏ä
 		if (virtualController.isKeyDown(0, RWTVirtualController.UP)) {
 			playerMoveY += 4.0;
 			Direction = way.up;
 		}
-		// â∫
+		// ‰∏ã
 		if (virtualController.isKeyDown(0, RWTVirtualController.DOWN)) {
 			playerMoveY -= 4.0;
 			Direction = way.down;
 		}
+		player.muki(Direction);
 
-		// íeÇÃî≠éÀ
+		// Âºæ„ÅÆÁô∫Â∞Ñ
 		if (virtualController.isKeyDown(0, RWTVirtualController.BUTTON_A)) {
 			if (System.currentTimeMillis() - lastMyShipBulletShootTime > 1000) {
 				if (Direction != null) {
-					Bullet = new Bullet("data\\images\\íe.png");
+					Bullet = new Bullet("data\\images\\Âºæ.png");
 				}
-				Bullet.setPosition(player.getPosition());
+				Bullet.setPosition(player.getPosition().getX(), player.getPosition().getY(), 15);
 				if (Direction == way.up) {
-					Bullet.setVelocity(new Velocity2D(0.0, 5.0));
+					Bullet.setVelocity(new Velocity2D(0.0, 10.0));
 				}
 				if (Direction == way.right) {
-					Bullet.setVelocity(new Velocity2D(5.0, 0.0));
+					Bullet.setVelocity(new Velocity2D(10.0, 0.0));
 				}
 				if (Direction == way.down) {
-					Bullet.setVelocity(new Velocity2D(0.0, -5.0));
+					Bullet.setVelocity(new Velocity2D(0.0, -10.0));
 				}
 				if (Direction == way.left) {
-					Bullet.setVelocity(new Velocity2D(-5.0, 0.0));
+					Bullet.setVelocity(new Velocity2D(-10.0, 0.0));
 				}
 				universe.place(Bullet);
 				BulletList.add(Bullet);
@@ -232,12 +232,13 @@ public class Main extends SimpleRolePlayingGame {
 			}
 		}
 
-		// ÉvÉåÉCÉÑÅ[ÇÃíeÇìÆÇ©Ç∑
+
+		// „Éó„É¨„Ç§„É§„Éº„ÅÆÂºæ„ÇíÂãï„Åã„Åô
 		for (int i = 0; i < BulletList.size(); i++) {
 			Bullet Bullet = BulletList.get(i);
-			Bullet.motion(interval); // ÉvÉåÉCÉÑÅ[ÇÃíeÇÃà⁄ìÆ
+			Bullet.motion(interval); // „Éó„É¨„Ç§„É§„Éº„ÅÆÂºæ„ÅÆÁßªÂãï
 			if (Bullet.isInScreen(viewRangeWidth, viewRangeHeight) == false) {
-				// ÉvÉåÉCÉÑÅ[ÇÃíeÇè¡Ç∑
+				// „Éó„É¨„Ç§„É§„Éº„ÅÆÂºæ„ÇíÊ∂à„Åô
 				universe.displace(Bullet);
 				BulletList.remove(i);
 			}
@@ -247,23 +248,23 @@ public class Main extends SimpleRolePlayingGame {
 		}
 		if (virtualController.isKeyDown(0, RWTVirtualController.BUTTON_B)) {
 			/*
-			if (enemy.checkCollision(player)) {//åªéûì_Ç≈ÇÕÉvÉåÉCÉÑÅ[Ç∆Ç‘Ç¬Ç©Ç¡ÇΩÇÁÇ¡ÇƒÇ±Ç∆Ç…Ç»Ç¡ÇƒÇÈ
+			if (enemy.checkCollision(player)) {//ÁèæÊôÇÁÇπ„Åß„ÅØ„Éó„É¨„Ç§„É§„Éº„Å®„Å∂„Å§„Åã„Å£„Åü„Çâ„Å£„Å¶„Åì„Å®„Å´„Å™„Å£„Å¶„Çã
 				System.out.println("knife");
 			}
 			*/
-			//ÉiÉCÉtÇ≈çUåÇ
+			//„Éä„Ç§„Éï„ÅßÊîªÊíÉ
 		}
 
-		//ÉvÉåÉCÉÑÅ[Çà⁄ìÆÇ≥ÇπÇÈ
+		//„Éó„É¨„Ç§„É§„Éº„ÇíÁßªÂãï„Åï„Åõ„Çã
 		player.setVelocity(playerMoveX, playerMoveY);
 		player.motion(interval);
-		//É}ÉbÉvÇ∆ÇÃìñÇΩÇËîªíËÇí≤ç∏ÇµÅAï«Ç…Ç‘Ç¬Ç©Ç¡ÇƒÇ¢ÇΩÇÁÉvÉåÉCÉÑÅ[ÇÃà íuÇñﬂÇ∑
+		//„Éû„ÉÉ„Éó„Å®„ÅÆÂΩì„Åü„ÇäÂà§ÂÆö„ÇíË™øÊüª„Åó„ÄÅÂ£Å„Å´„Å∂„Å§„Åã„Å£„Å¶„ÅÑ„Åü„Çâ„Éó„É¨„Ç§„É§„Éº„ÅÆ‰ΩçÁΩÆ„ÇíÊàª„Åô
 		if (map.checkCollision(player).isCheckColision()) {
 			player.setVelocity(-playerMoveX, -playerMoveY);
 			player.motion(interval);
 		}
 
-		//ìGÇÃÉXÉ|Å[Éì
+		//Êïµ„ÅÆ„Çπ„Éù„Éº„É≥
 		lastenemytime++;
 		if (lastenemytime > 100) {
 			if(enemycounter<10) {
@@ -294,37 +295,45 @@ public class Main extends SimpleRolePlayingGame {
 		}
 		}
 
-		//ìGÇìÆÇ©Ç∑
+		//Êïµ„ÇíÂãï„Åã„Åô
 		for (int j = 0; j < enemylist.size(); j++) {
 			Enemy e = enemylist.get(j);
 			e.enemyMove(player.getPosition());
 			e.motion(interval);
-			//âIâÒìÆçÏ
-			if(map.checkCollision(enemylist.get(j)).isCheckColision()) {
-				System.out.println(j+"col");
+			//ËøÇÂõûÂãï‰Ωú
+			while(map.checkCollision(e).isCheckColision()) {
+				//System.out.println(j+"col");
 				e.setVelocity(
 						e.getVelocity().getY()-e.getVelocity().getX(),
 						-e.getVelocity().getX()-e.getVelocity().getY()
 						);
 				e.motion(interval);
 			}
-			//ÉvÉåÉCÉÑÅ[Ç∆ÇÃê⁄êG
+			//„Éó„É¨„Ç§„É§„Éº„Å®„ÅÆÊé•Ëß¶
 			if (e.checkCollision(player)) {
 				System.out.println("enemy"+ j +"'s attack");
-				((ScenarioGameContainer)container).changeLifeBar(player.playerDamage(1));
+				((ScenarioGameContainer)container).changeLifeBar(player.playerDamage(e.power));
+				e.setVelocity(
+						-e.getVelocity().getX()*100,
+						-e.getVelocity().getY()*100
+						);
+				e.motion(interval);
 			}
-			//íeÇ∆ÇÃê⁄êG
+			//Âºæ„Å®„ÅÆÊé•Ëß¶
 			for(int i=0;i<BulletList.size();i++) {
 				Bullet Bullet = BulletList.get(i);
 				if(e.checkCollision(Bullet)) {
 					universe.displace(Bullet);
 					BulletList.remove(i);
-					if(Bossflag==0) {
+					/*
+					if(!Bossflag) {
 					e.HP=e.HP-100;
 					}
-					if(Bossflag==1) {
+					if(Bossflag) {
 						e.HP=e.HP-20;
 					}
+					*/
+					e.HP=e.HP-100;
 				}
 			}
 			if(e.HP<=0) {
@@ -333,16 +342,17 @@ public class Main extends SimpleRolePlayingGame {
 				killcounter++;
 
 			}
-			System.out.println("åÇîjêî"+killcounter);
+			System.out.println("ÊíÉÁ†¥Êï∞"+killcounter);
 		}
-		//É{ÉXÇÃèoåª
+		//„Éú„Çπ„ÅÆÂá∫Áèæ
 		if(killcounter==10) {
-			if(Bossflag==0) {
+			if(!Bossflag) {
 			Enemy e = new Enemy("data\\enemy\\snake.gif");
 			e.setPosition(14.0, 18.0);
+        e.HP=1000;
 			universe.place(e);
 			enemylist.add(e);
-			Bossflag=1;
+			Bossflag=true;
 			}
 		}
 
@@ -354,16 +364,16 @@ public class Main extends SimpleRolePlayingGame {
 
 		//enemy2.motion(interval,map,player);
 
-		// è’ìÀîªíË
+		// Ë°ùÁ™ÅÂà§ÂÆö
 		/*if (player.checkCollision(king)) {
-			// ÉvÉåÉCÉÑÅ[Ç∆â§ólÇ™Ç‘Ç¬Ç©Ç¡ÇΩèÍçá
-			scenario.fire("â§ólÇ∆Ç‘Ç¬Ç©ÇÈ");	// Åuâ§ólÇ∆Ç‘Ç¬Ç©ÇÈÅvÇ∆Ç¢Ç§ÉCÉxÉìÉgÇî≠ê∂Ç∑ÇÈÅiÉVÉiÉäÉIÇ™êiÇﬁÅj
+			// „Éó„É¨„Ç§„É§„Éº„Å®ÁéãÊßò„Åå„Å∂„Å§„Åã„Å£„ÅüÂ†¥Âêà
+			scenario.fire("ÁéãÊßò„Å®„Å∂„Å§„Åã„Çã");	// „ÄåÁéãÊßò„Å®„Å∂„Å§„Åã„Çã„Äç„Å®„ÅÑ„ÅÜ„Ç§„Éô„É≥„Éà„ÇíÁô∫Áîü„Åô„ÇãÔºà„Ç∑„Éä„É™„Ç™„ÅåÈÄ≤„ÇÄÔºâ
 		}*/
 	}
 
 	@Override
 	public void action(String action, Event event, ScenarioState nextState) {
-		// ÉVÉiÉäÉIêiçsÇ…ÇÊÇÈê¢äEÇ÷ÇÃçÏópÇÇ±Ç±Ç…èëÇ≠
+		// „Ç∑„Éä„É™„Ç™ÈÄ≤Ë°å„Å´„Çà„Çã‰∏ñÁïå„Å∏„ÅÆ‰ΩúÁî®„Çí„Åì„Åì„Å´Êõ∏„Åè
 		if (action.equals("startFight")) {
 			changeToSubContainer();
 		} else if (action.equals("endFight")) {
@@ -372,7 +382,7 @@ public class Main extends SimpleRolePlayingGame {
 	}
 
 	/**
-	 * ÉQÅ[ÉÄÇÃÉÅÉCÉì
+	 * „Ç≤„Éº„É†„ÅÆ„É°„Ç§„É≥
 	 *
 	 * @param args
 	 */
@@ -384,7 +394,7 @@ public class Main extends SimpleRolePlayingGame {
 
 	@Override
 	public BaseScenarioGameContainer createSubRWTContainer() {
-		// TODO é©ìÆê∂ê¨Ç≥ÇÍÇΩÉÅÉ\ÉbÉhÅEÉXÉ^Éu
+		// TODO Ëá™ÂãïÁîüÊàê„Åï„Çå„Åü„É°„ÇΩ„ÉÉ„Éâ„Éª„Çπ„Çø„Éñ
 		return null;
 	}
 
