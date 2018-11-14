@@ -33,7 +33,7 @@ public class Main extends SimpleRolePlayingGame {
 	private ArrayList<Bullet> BulletList = new ArrayList<Bullet>();
 	private int enemycounter=0;
 
-	private int Bossflag=0;
+	private boolean Bossflag=false;
 	//way.up   は 0 と同じ
 	//way.rightは 1 と同じ
 	//way.down は 2 と同じ
@@ -129,9 +129,9 @@ public class Main extends SimpleRolePlayingGame {
 		camera.addTarget(map);
 
 		// プレイヤーの配置
-		player = new Player("data\\RPG\\player.png");
-		player.setPosition(14.0, 14.0);
-		player.setCollisionRadius(0.5);
+		player = new Player("data\\player\\up.png");
+		player.setPosition(14.0, 14.0, 1.0);
+		player.setCollisionRadius(0.1);
 		universe.place(player);
 		/* 敵の配置
 		enemy = new Enemy("data\\\\images\\\\弾.png");
@@ -193,7 +193,6 @@ public class Main extends SimpleRolePlayingGame {
 			playerMoveX += 4.0;
 			//disableControl = true;
 			Direction = way.right;
-
 		}
 		// 上
 		if (virtualController.isKeyDown(0, RWTVirtualController.UP)) {
@@ -205,6 +204,7 @@ public class Main extends SimpleRolePlayingGame {
 			playerMoveY -= 4.0;
 			Direction = way.down;
 		}
+		player.muki(Direction);
 
 		// 弾の発射
 		if (virtualController.isKeyDown(0, RWTVirtualController.BUTTON_A)) {
@@ -212,24 +212,25 @@ public class Main extends SimpleRolePlayingGame {
 				if (Direction != null) {
 					Bullet = new Bullet("data\\images\\弾.png");
 				}
-				Bullet.setPosition(player.getPosition());
+				Bullet.setPosition(player.getPosition().getX(), player.getPosition().getY(), 15);
 				if (Direction == way.up) {
-					Bullet.setVelocity(new Velocity2D(0.0, 5.0));
+					Bullet.setVelocity(new Velocity2D(0.0, 10.0));
 				}
 				if (Direction == way.right) {
-					Bullet.setVelocity(new Velocity2D(5.0, 0.0));
+					Bullet.setVelocity(new Velocity2D(10.0, 0.0));
 				}
 				if (Direction == way.down) {
-					Bullet.setVelocity(new Velocity2D(0.0, -5.0));
+					Bullet.setVelocity(new Velocity2D(0.0, -10.0));
 				}
 				if (Direction == way.left) {
-					Bullet.setVelocity(new Velocity2D(-5.0, 0.0));
+					Bullet.setVelocity(new Velocity2D(-10.0, 0.0));
 				}
 				universe.place(Bullet);
 				BulletList.add(Bullet);
 				lastMyShipBulletShootTime = System.currentTimeMillis();
 			}
 		}
+
 
 		// プレイヤーの弾を動かす
 		for (int i = 0; i < BulletList.size(); i++) {
@@ -299,8 +300,8 @@ public class Main extends SimpleRolePlayingGame {
 			e.enemyMove(player.getPosition());
 			e.motion(interval);
 			//迂回動作
-			if(map.checkCollision(enemylist.get(j)).isCheckColision()) {
-				System.out.println(j+"col");
+			while(map.checkCollision(e).isCheckColision()) {
+				//System.out.println(j+"col");
 				e.setVelocity(
 						e.getVelocity().getY()-e.getVelocity().getX(),
 						-e.getVelocity().getX()-e.getVelocity().getY()
@@ -310,7 +311,12 @@ public class Main extends SimpleRolePlayingGame {
 			//プレイヤーとの接触
 			if (e.checkCollision(player)) {
 				System.out.println("enemy"+ j +"'s attack");
-				((ScenarioGameContainer)container).changeLifeBar(player.playerDamage(1));
+				((ScenarioGameContainer)container).changeLifeBar(player.playerDamage(e.power));
+				e.setVelocity(
+						-e.getVelocity().getX()*100,
+						-e.getVelocity().getY()*100
+						);
+				e.motion(interval);
 			}
 			//弾との接触
 			for(int i=0;i<BulletList.size();i++) {
@@ -318,12 +324,15 @@ public class Main extends SimpleRolePlayingGame {
 				if(e.checkCollision(Bullet)) {
 					universe.displace(Bullet);
 					BulletList.remove(i);
-					if(Bossflag==0) {
+					/*
+					if(!Bossflag) {
 					e.HP=e.HP-100;
 					}
-					if(Bossflag==1) {
+					if(Bossflag) {
 						e.HP=e.HP-20;
 					}
+					*/
+					e.HP=e.HP-100;
 				}
 			}
 			if(e.HP<=0) {
@@ -336,12 +345,13 @@ public class Main extends SimpleRolePlayingGame {
 		}
 		//ボスの出現
 		if(enemycounter==10) {
-			if(Bossflag==0) {
-			Enemy e = new Enemy("data\\enemy\\snake.gif");
+			if(!Bossflag) {
+			Enemy e = new boss("data\\enemy\\snake.gif");
 			e.setPosition(14.0, 14.0);
+			e.HP=1000;
 			universe.place(e);
 			enemylist.add(e);
-			Bossflag=1;
+			Bossflag=true;
 			}
 		}
 
