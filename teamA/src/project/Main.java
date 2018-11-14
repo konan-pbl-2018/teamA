@@ -46,7 +46,7 @@ public class Main extends SimpleRolePlayingGame {
 		left
 	}
 	private way Direction=way.up;
-	// 速度によって物体が動いている時にボタンを押せるかどうかを判定するフラグ
+	//速度によって物体が動いている時にボタンを押せるかどうかを判定するフラグ
 	//private boolean disableControl = false;
 
 
@@ -135,7 +135,7 @@ public class Main extends SimpleRolePlayingGame {
 		player.setCollisionRadius(0.1);
 		universe.place(player);
 		/* 敵の配置
-		enemy = new Enemy("data\\\\images\\\\弾.png");
+		enemy = new Enemy("data\\\\images\\\\蠑ｾ.png");
 		enemy.setPosition(18.0, 10.0);
 		enemy.setCollisionRadius(0.5);
 		universe.place(enemy);
@@ -144,7 +144,7 @@ public class Main extends SimpleRolePlayingGame {
 		// プレイヤーを画面の中央に
 		setCenter(player);
 
-		// シナリオの設定
+		// シナリオの設定�
 		setScenario("data\\TemplateRPG\\Scenario\\scenario2.xml");
 	}
 
@@ -207,11 +207,11 @@ public class Main extends SimpleRolePlayingGame {
 		}
 		player.muki(Direction);
 
-		// 弾の発射
+		// 球の発射
 		if (virtualController.isKeyDown(0, RWTVirtualController.BUTTON_A)) {
 			if (System.currentTimeMillis() - lastMyShipBulletShootTime > 1000) {
 				if (Direction != null) {
-					Bullet = new Bullet("data\\images\\弾.png");
+					Bullet = new Bullet("data\\images\\蠑ｾ.png");
 				}
 				Bullet.setPosition(player.getPosition().getX(), player.getPosition().getY(), 15);
 				if (Direction == way.up) {
