@@ -9,38 +9,39 @@ import framework.RWT.RWTLabel;
 import framework.RWT.RWTVirtualController;
 import framework.RWT.RWTVirtualKey;
 
-public class MainEndingContainer extends RWTContainer{
+public class MainGameoverContainer extends RWTContainer {
 	private Main game;
 
-	public MainEndingContainer(Main game) {
+	public MainGameoverContainer(Main game) {
 		this.game = game;
 	}
 
-	@Override
 	public void build(GraphicsConfiguration gc) {
 		RWTLabel startLabel = new RWTLabel();
-		startLabel.setString("Clear");
+		startLabel.setString("Gameover");
 		startLabel.setColor(Color.WHITE);
-		startLabel.setRelativePosition(0.3f, 0.5f);
-		Font f = new Font("", Font.PLAIN, 60);
+		startLabel.setRelativePosition(0.5f, 0.5f);
+		Font f = new Font("", Font.PLAIN, 30);
 		startLabel.setFont(f);
 		addWidget(startLabel);
 	}
 
-	@Override
+
+
+
+
+
 	public void keyPressed(RWTVirtualKey key) {
 		if (key.getVirtualKey() == RWTVirtualController.BUTTON_A) {
-			game.restart();
+			game.play();
 		}
 	}
 
-	@Override
 	public void keyReleased(RWTVirtualKey key) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void keyTyped(RWTVirtualKey key) {
 		// TODO Auto-generated method stub
 
