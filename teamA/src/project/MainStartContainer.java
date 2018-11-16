@@ -16,6 +16,7 @@ public class MainStartContainer extends RWTContainer {
 		this.game = game;
 	}
 
+
 	public void build(GraphicsConfiguration gc) {
 		RWTLabel startLabel = new RWTLabel();
 		startLabel.setString("Start");
@@ -27,15 +28,12 @@ public class MainStartContainer extends RWTContainer {
 	}
 
 
-
-
-
-
 	public void keyPressed(RWTVirtualKey key) {
 		if (key.getVirtualKey() == RWTVirtualController.BUTTON_A) {
 			game.play();
 		}
 	}
+
 
 	public void keyReleased(RWTVirtualKey key) {
 		// TODO Auto-generated method stub

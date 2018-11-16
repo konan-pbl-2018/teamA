@@ -301,7 +301,7 @@ public class Main extends SimpleRolePlayingGame {
 			e.enemyMove(player.getPosition());
 			e.motion(interval);
 			//迂回動作
-			while(map.checkCollision(e).isCheckColision()) {
+			if(map.checkCollision(e).isCheckColision()) {
 				//System.out.println(j+"col");
 				e.setVelocity(
 						e.getVelocity().getY()-e.getVelocity().getX(),
@@ -340,6 +340,9 @@ public class Main extends SimpleRolePlayingGame {
 				universe.displace(e);
 				enemylist.remove(j);
 				killcounter++;
+				if(killcounter>=11) {
+					ending();
+				}
 
 			}
 			System.out.println("撃破数"+killcounter);

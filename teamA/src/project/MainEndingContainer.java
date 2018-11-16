@@ -1,5 +1,6 @@
 package project;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsConfiguration;
 
@@ -7,7 +8,6 @@ import framework.RWT.RWTContainer;
 import framework.RWT.RWTLabel;
 import framework.RWT.RWTVirtualController;
 import framework.RWT.RWTVirtualKey;
-
 
 public class MainEndingContainer extends RWTContainer{
 	private Main game;
@@ -20,6 +20,7 @@ public class MainEndingContainer extends RWTContainer{
 	public void build(GraphicsConfiguration gc) {
 		RWTLabel startLabel = new RWTLabel();
 		startLabel.setString("Finish");
+		startLabel.setColor(Color.WHITE);
 		startLabel.setRelativePosition(0.3f, 0.5f);
 		Font f = new Font("", Font.PLAIN, 60);
 		startLabel.setFont(f);
