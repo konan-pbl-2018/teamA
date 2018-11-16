@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import framework.RWT.RWTContainer;
 import framework.RWT.RWTFrame3D;
 import framework.RWT.RWTVirtualController;
+import framework.audio.BGM3D;
+import framework.audio.Sound3D;
 import framework.game2D.Velocity2D;
 import framework.gameMain.BaseScenarioGameContainer;
 import framework.gameMain.IGameState;
@@ -50,12 +52,17 @@ public class Main extends SimpleRolePlayingGame {
 	//private boolean disableControl = false;
 
 
-
+	private Sound3D BGM=BGM3D.registerBGM("data\\BGM\\BGM1.wav");
+	private Sound3D shotsound=new Sound3D("data\\SE\\Shot.wav");
+	private Sound3D damegesound=new Sound3D("data\\SE\\Damege.wav");
+	private Sound3D damegedsound=new Sound3D("data\\SE\\Dameged.wav");
+	private Sound3D bosssound=new Sound3D("data\\SE\\BossApp.wav");
+	private Sound3D gameoversound=new Sound3D("data\\SE\\Gameover.wav");
 
 
 	private IGameState initialGameState = null;
 	private IGameState finalGameState = null;
-
+	private IGameState GameoverGameState = null;
 	public  Main(){
 		super();
 		initialGameState = new IGameState() {
@@ -79,6 +86,21 @@ public class Main extends SimpleRolePlayingGame {
 			public void init(RWTFrame3D frame) {
 				Main.this.frame = frame;
 				RWTContainer container = new MainEndingContainer(Main.this);
+				changeContainer(container);
+			}
+			@Override
+			public boolean useTimer() {
+				return false;
+			}
+			@Override
+			public void update(RWTVirtualController virtualController, long interval) {
+			}
+		};
+		GameoverGameState = new IGameState() {
+			@Override
+			public void init(RWTFrame3D frame) {
+				Main.this.frame = frame;
+				RWTContainer container = new MainGameoverContainer(Main.this);
 				changeContainer(container);
 			}
 			@Override
@@ -117,7 +139,11 @@ public class Main extends SimpleRolePlayingGame {
 		start();
 	}
 
-
+	public void Gameover() {
+		stop();
+		setCurrentGameState(GameoverGameState);
+		start();
+	}
 
 
 
@@ -131,6 +157,7 @@ public class Main extends SimpleRolePlayingGame {
 		System.out.println(getViewRangeWidth());
 		System.out.println(getViewRangeHeight());
 
+		BGM3D.playBGM(BGM);
 		// プレイヤーの配置
 		player = new Player("data\\player\\up.png");
 		player.setPosition(14.0, 14.0, 1.0);
@@ -212,6 +239,7 @@ public class Main extends SimpleRolePlayingGame {
 		// 球の発射
 		if (virtualController.isKeyDown(0, RWTVirtualController.BUTTON_A)) {
 			if (System.currentTimeMillis() - lastMyShipBulletShootTime > 1000) {
+				shotsound.play();
 				if (Direction != null) {
 					Bullet = new Bullet("data\\images\\弾.png");
 				}
@@ -313,6 +341,7 @@ public class Main extends SimpleRolePlayingGame {
 			}
 			//プレイヤーとの接触
 			if (e.checkCollision(player)) {
+				damegedsound.play();
 				System.out.println("enemy"+ j +"'s attack");
 				((ScenarioGameContainer)container).changeLifeBar(player.playerDamage(e.power));
 				e.setVelocity(
@@ -321,10 +350,15 @@ public class Main extends SimpleRolePlayingGame {
 						);
 				e.motion(interval);
 			}
+			if(player.HP==0) {
+				gameoversound.play();
+				Gameover();
+			}
 			//弾との接触
 			for(int i=0;i<BulletList.size();i++) {
 				Bullet Bullet = BulletList.get(i);
 				if(e.checkCollision(Bullet)) {
+					damegesound.play();
 					universe.displace(Bullet);
 					BulletList.remove(i);
 					/*
@@ -352,6 +386,7 @@ public class Main extends SimpleRolePlayingGame {
 		//ボスの出現
 		if(killcounter==10) {
 			if(!Bossflag) {
+				bosssound.play();
 			Enemy e = new Enemy("data\\enemy\\boss.png");
 			e.setPosition(14.0, 18.0);
         e.HP=1000;
