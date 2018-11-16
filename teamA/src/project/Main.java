@@ -170,6 +170,7 @@ public class Main extends SimpleRolePlayingGame {
 		enemycounter=0;
 		killcounter=0;
 		Bossflag=false;
+		enemylist = new ArrayList<Enemy>();
 
 		// プレイヤーを画面の中央に
 		setCenter(player);
