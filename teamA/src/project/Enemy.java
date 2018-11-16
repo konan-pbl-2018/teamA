@@ -39,7 +39,8 @@ public class Enemy extends Sprite {
 
 		if(Math.abs(this.getPosition().getX()-player.getX()) > Math.abs(this.getPosition().getY()-player.getY())) {
 			y=0;
-		}else {
+		}else
+		if(Math.abs(this.getPosition().getX()-player.getX()) < Math.abs(this.getPosition().getY()-player.getY())){
 			x=0;
 		}
 
