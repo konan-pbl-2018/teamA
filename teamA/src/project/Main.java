@@ -128,6 +128,8 @@ public class Main extends SimpleRolePlayingGame {
 		map = new Map();
 		universe.place(map);
 		camera.addTarget(map);
+		System.out.println(getViewRangeWidth());
+		System.out.println(getViewRangeHeight());
 
 		// プレイヤーの配置
 		player = new Player("data\\player\\up.png");
@@ -237,7 +239,7 @@ public class Main extends SimpleRolePlayingGame {
 		for (int i = 0; i < BulletList.size(); i++) {
 			Bullet Bullet = BulletList.get(i);
 			Bullet.motion(interval); // プレイヤーの弾の移動
-			if (Bullet.isInScreen(viewRangeWidth, viewRangeHeight) == false) {
+			if (Bullet.isInScreen(60, 60) == false) {
 				// プレイヤーの弾を消す
 				universe.displace(Bullet);
 				BulletList.remove(i);
@@ -269,7 +271,7 @@ public class Main extends SimpleRolePlayingGame {
 		if (lastenemytime > 100) {
 			if(enemycounter<10) {
 			if (enemylist.size() < 6) {
-				Enemy e = new Enemy("data\\images\\Enemy.gif");///////////////////////////////////////
+				Enemy e = new Enemy("data\\enemy\\snake.gif");///////////////////////////////////////
 
 				enemyrandom=Math.random();
 				enemyplace=(int) (enemyrandom*4);
@@ -350,7 +352,7 @@ public class Main extends SimpleRolePlayingGame {
 		//ボスの出現
 		if(killcounter==10) {
 			if(!Bossflag) {
-			Enemy e = new Enemy("data\\enemy\\snake.gif");
+			Enemy e = new Enemy("data\\enemy\\boss.png");
 			e.setPosition(14.0, 18.0);
         e.HP=1000;
 			universe.place(e);
