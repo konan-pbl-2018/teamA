@@ -128,8 +128,6 @@ public class Main extends SimpleRolePlayingGame {
 		map = new Map();
 		universe.place(map);
 		camera.addTarget(map);
-		System.out.println(getViewRangeWidth());
-		System.out.println(getViewRangeHeight());
 
 		// プレイヤーの配置
 		player = new Player("data\\player\\up.png");
@@ -142,6 +140,9 @@ public class Main extends SimpleRolePlayingGame {
 		enemy.setCollisionRadius(0.5);
 		universe.place(enemy);
 		*/
+		enemycounter=0;
+		killcounter=0;
+		Bossflag=false;
 
 		// プレイヤーを画面の中央に
 		setCenter(player);
@@ -273,20 +274,20 @@ public class Main extends SimpleRolePlayingGame {
 			if (enemylist.size() < 6) {
 				Enemy e = new Enemy("data\\enemy\\snake.gif");///////////////////////////////////////
 
-				enemyrandom=Math.random();
-				enemyplace=(int) (enemyrandom*4);
-
-				if(enemyplace==1) {
+				//enemyrandom=Math.random();
+				enemyplace=(int)(Math.random()*3.0);
+				System.out.println("spawn"+enemyplace);
+				if(enemyplace==0) {
 				e.setPosition(14.0, 34.0);
 				}
-				if(enemyplace==2) {
+				if(enemyplace==1) {
 				e.setPosition(28.0, 18.0);
 				}
-				if(enemyplace==3) {
-				e.setPosition(14.0, 12.0);
+				if(enemyplace==2) {
+				e.setPosition(14.0, 18.0);
 				}
-				if(enemyplace==4) {
-				e.setPosition(2.0, 18.0);
+				if(enemyplace==3) {
+				e.setPosition(2.0, 14.0);
 				}
 				e.setCollisionRadius(0.5);
 				universe.place(e);
@@ -341,13 +342,14 @@ public class Main extends SimpleRolePlayingGame {
 			if(e.HP<=0) {
 				universe.displace(e);
 				enemylist.remove(j);
+				System.out.println("撃破数"+killcounter);
 				killcounter++;
 				if(killcounter>=11) {
 					ending();
 				}
 
 			}
-			System.out.println("撃破数"+killcounter);
+
 		}
 		//ボスの出現
 		if(killcounter==10) {
