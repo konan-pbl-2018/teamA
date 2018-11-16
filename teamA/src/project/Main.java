@@ -304,7 +304,7 @@ public class Main extends SimpleRolePlayingGame {
 			e.enemyMove(player.getPosition());
 			e.motion(interval);
 			//迂回動作
-			if(map.checkCollision(e).isCheckColision()) {
+			while(map.checkCollision(e).isCheckColision()) {
 				//System.out.println(j+"col");
 				e.setVelocity(
 						e.getVelocity().getY()-e.getVelocity().getX(),
