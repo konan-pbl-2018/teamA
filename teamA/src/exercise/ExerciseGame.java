@@ -12,14 +12,14 @@ import com.sun.j3d.utils.image.TextureLoader;
 
 import framework.RWT.RWTFrame3D;
 import framework.RWT.RWTVirtualController;
-import framework.game2D.Sprite;
-import framework.gameMain.SimpleShootingGame;
+import framework.gameMain.SimpleGame;
 import framework.model3D.BackgroundBox;
 import framework.model3D.Universe;
+import framework.view3D.Camera3D;
 
-public class ExerciseGame extends SimpleShootingGame {
+public class ExerciseGame extends SimpleGame {
 	@Override
-	public void init(Universe universe) {
+	public void init(Universe universe, Camera3D camera) {
 		// 平行光源を配置する
         DirectionalLight dirlight = new DirectionalLight(
         		true,                           //光のON/OFF
@@ -36,11 +36,6 @@ public class ExerciseGame extends SimpleShootingGame {
 
 		// 背景を作成する
 		buildSkyBox(universe);
-
-		Sprite myShip = new Sprite("data\\images\\MyShip.gif");
-		universe.place(myShip);
-
-		setViewRange(30, 30);
 	}
 
 	@Override
@@ -50,10 +45,7 @@ public class ExerciseGame extends SimpleShootingGame {
 
 	@Override
 	public RWTFrame3D createFrame3D() {
-		RWTFrame3D f = new RWTFrame3D();
-		f.setSize(1200, 1000);
-		f.setTitle("2018年プロジェクト演習");
-		return f;
+		return null;
 	}
 
 	/**
